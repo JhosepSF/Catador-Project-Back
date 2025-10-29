@@ -1,15 +1,18 @@
 from pathlib import Path
 import os
-from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(BASE_DIR / ".env")  
 
-# Si la var existe pero está VACÍA, 'or' aplica el fallback
-SECRET_KEY = os.getenv("SECRET_KEY") or "dev-secret-key-CHANGE-ME"
+SECRET_KEY = 'django-insecure-ac!=&=@^2a)@v-2e_h5x7znxt(2@1ht#!fjs*8%p(dh6%kzm%@'
 
-DEBUG = os.getenv("DEBUG", "1") == "1"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")
+DEBUG = True
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    "192.168.18.25",
+    "192.168.18.24",
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -35,7 +38,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'inference.middleware.APILoggingMiddleware',
-
 ]
 
 ROOT_URLCONF = 'catador_backend.urls'
@@ -73,7 +75,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_ALL_ORIGINS = DEBUG
+CORS_ALLOW_ALL_ORIGINS = True 
 
 # Ruta del modelo (puedes sobrescribir con variable de entorno MODEL_PATH)
 MODEL_PATH = os.getenv('MODEL_PATH', str(BASE_DIR / 'models' / 'modelo_eval_senso_xgb.pkl'))
