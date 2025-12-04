@@ -1,9 +1,7 @@
 from rest_framework import serializers
 
 class AssessmentSerializer(serializers.Serializer):
-    cacaoType = serializers.CharField()
     phLevel = serializers.CharField()
-    purity = serializers.CharField()
 
     def validate(self, attrs):
         def to_float(val, field_name):
@@ -14,6 +12,11 @@ class AssessmentSerializer(serializers.Serializer):
                 raise serializers.ValidationError({field_name: 'Debe ser numérico.'})
 
         attrs['ph'] = to_float(attrs['phLevel'], 'phLevel')
-        attrs['purity_f'] = to_float(attrs['purity'], 'purity')
-        attrs['cacaoType'] = attrs['cacaoType'].strip()
+        
+        # Validar rango de pH (típicamente 3.0 - 7.0 para cacao)
+        if not (3.0 <= attrs['ph'] <= 7.0):
+            raise serializers.ValidationError({
+                'phLevel': 'El pH debe estar entre 3.0 y 7.0'
+            })
+        
         return attrs
