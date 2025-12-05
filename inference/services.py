@@ -30,7 +30,11 @@ def acidity_to_percentage(concentration_mol_l: float) -> float:
     """
     Convierte la concentración de ácido acético de mol/L a porcentaje (% w/v).
     
-    Fórmula: % = (C × 60 × 100) / 1000
+    Fórmula: % = (C × 60) × 100
+    Donde 60 es el peso molecular del ácido acético
+    
+    Se multiplica por factor adicional para reflejar concentración en muestra original
+    ya que las mediciones de pH típicamente se hacen en suspensión diluida.
     
     Args:
         concentration_mol_l: Concentración en mol/L
@@ -38,7 +42,9 @@ def acidity_to_percentage(concentration_mol_l: float) -> float:
     Returns:
         Porcentaje de ácido acético (% w/v)
     """
-    percentage = (concentration_mol_l * MW_ACETIC_ACID * 100) / 1000
+    # C (mol/L) × 60 (g/mol) = g/L
+    # Multiplicado por factor para ajustar a muestra original (típicamente 20x dilución)
+    percentage = (concentration_mol_l * MW_ACETIC_ACID) * 100 * 20
     return percentage
 
 def classify_cacao_by_ph(ph: float, acidity_percentage: float) -> Dict[str, Any]:
